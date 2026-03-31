@@ -115,40 +115,38 @@ def done():
     </body></html>
     """
 
+def get_drive_items(token, folder_id="root"):
+    items = []
+    folder_query = f"'{folder_id}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false"
+    video_query = f"'{folder_id}' in parents and mimeType contains 'video/' and trashed=false"
+    r_folders = requests.get("https://www.googleapis.com/drive/v3/files",
+        headers={"Authorization": f"Bearer {token}"},
+        params={"q": folder_query, "fields": "files(id,name)", "pageSize": 50, "orderBy": "name"})
+    for f in r_folders.json().get("files", []):
+        items.append({"id": f["id"], "name": f["name"], "type": "folder"})
+    r_videos = requests.get("https://www.googleapis.com/drive/v3/files",
+        headers={"Authorization": f"Bearer {token}"},
+        params={"q": video_query, "fields": "files(id,name,size,thumbnailLink,videoMediaMetadata)", "pageSize": 50, "orderBy": "name"})
+    for f in r_videos.json().get("files", []):
+        meta = f.get("videoMediaMetadata", {})
+        items.append({"id": f["id"], "name": f["name"], "type": "video",
+            "size": int(f.get("size", 0)), "thumb": f.get("thumbnailLink", ""),
+            "duration": int(meta.get("durationMillis", 0)) // 1000})
+    return items
+
 @app.route("/drive/videos")
 def drive_videos():
-    """Lista videos de Google Drive del usuario."""
     token = request.headers.get("Authorization","").replace("Bearer ","")
-    if not token:
-        return jsonify({"error": "Sin token"}), 401
+    if not token: return jsonify({"error": "Sin token"}), 401
+    items = get_drive_items(token, "root")
+    return jsonify({"items": items})
 
-    query = "mimeType contains 'video/' and trashed=false"
-    resp = requests.get(
-        "https://www.googleapis.com/drive/v3/files",
-        headers={"Authorization": f"Bearer {token}"},
-        params={
-            "q": query,
-            "fields": "files(id,name,size,thumbnailLink,videoMediaMetadata)",
-            "pageSize": 50,
-            "orderBy": "modifiedTime desc",
-        }
-    )
-    data = resp.json()
-    files = data.get("files", [])
-
-    videos = []
-    for f in files:
-        meta = f.get("videoMediaMetadata", {})
-        videos.append({
-            "id": f["id"],
-            "name": f["name"],
-            "size": int(f.get("size", 0)),
-            "thumb": f.get("thumbnailLink", ""),
-            "duration": int(meta.get("durationMillis", 0)) // 1000,
-            "width": meta.get("width", 0),
-            "height": meta.get("height", 0),
-        })
-    return jsonify({"videos": videos})
+@app.route("/drive/folder/<folder_id>")
+def drive_folder(folder_id):
+    token = request.headers.get("Authorization","").replace("Bearer ","")
+    if not token: return jsonify({"error": "Sin token"}), 401
+    items = get_drive_items(token, folder_id)
+    return jsonify({"items": items})
 
 @app.route("/upload", methods=["POST"])
 def upload():
