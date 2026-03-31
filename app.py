@@ -82,7 +82,7 @@ def oauth_callback():
 
     # Redirigir a la app principal con el token en la URL
     return redirect(f"/?token={access_token}")
-    """
+
 
 def get_drive_items(token, folder_id="root"):
     items = []
@@ -165,7 +165,7 @@ def download(job_id):
 # ── PIPELINE ──────────────────────────────────────────────────
 
 def download_from_drive(file_id, token, out_path):
-    """Descarga un archivo de Google Drive."""
+    # Descarga un archivo de Google Drive
     url = f"https://www.googleapis.com/drive/v3/files/{file_id}?alt=media"
     r = requests.get(url, headers={"Authorization": f"Bearer {token}"}, stream=True, timeout=300)
     r.raise_for_status()
