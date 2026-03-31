@@ -37,7 +37,7 @@ def upd(jid, status, pct, msg):
 
 @app.route("/")
 def index():
-    return send_file("index.html")
+    return send_file(os.path.join(os.path.dirname(__file__), "index.html"))
 
 @app.route("/ping")
 def ping():
