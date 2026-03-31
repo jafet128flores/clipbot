@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>ClipBot</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#080808;--s1:#121212;--s2:#1e1e1e;--s3:#272727;
+  --b1:rgba(255,255,255,.06);--b2:rgba(255,255,255,.12);--b3:rgba(255,255,255,.22);
+  --acc:#ff3c00;--acc2:#ff8c00;--tx:#f2f2f2;--mu:#505050;--mu2:#909090;
+  --gdrive:#4285f4;--r:12px;--r2:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Syne',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(255,60,0,.07),transparent);pointer-events:none;z-index:0}
+
+nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--b1);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.12em;color:var(--acc)}
+.logo b{color:var(--tx)}
+.nav-steps{display:flex;gap:6px}
+.nav-step{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);padding:5px 12px;border-radius:99px;border:1px solid transparent;cursor:pointer;transition:all .2s}
+.nav-step.active{color:var(--acc);border-color:var(--acc);background:rgba(255,60,0,.08)}
+
+.wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:2.5rem 1.5rem 6rem}
+.panel{display:none;animation:fadeIn .3s ease}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* BACKEND BAR */
+.backend-bar{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:10px 16px;display:flex;align-items:center;gap:10px;margin-bottom:2rem}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mu);flex-shrink:0;transition:background .3s}
+.dot.ok{background:#4cff72}.dot.err{background:var(--acc)}
+.backend-bar input{flex:1;background:transparent;border:none;color:var(--mu2);font-size:12px;font-family:'Syne',sans-serif;outline:none}
+.backend-bar input:focus{color:var(--tx)}
+.btn-ping{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu2);background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:4px 10px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn-ping:hover{border-color:var(--b2);color:var(--tx)}
+
+/* HERO */
+.hero{margin-bottom:2.5rem}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,5rem);line-height:.95;letter-spacing:.03em;margin-bottom:.8rem}
+.hero h1 span{color:var(--acc)}
+.hero p{font-size:14px;color:var(--mu2);line-height:1.7;max-width:480px}
+
+/* GOOGLE DRIVE CONNECT */
+.drive-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:2rem;text-align:center;margin-bottom:1.5rem}
+.drive-card.connected{border-color:#4cff72}
+.drive-icon{font-size:3rem;margin-bottom:1rem;line-height:1}
+.drive-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.06em;margin-bottom:.5rem}
+.drive-desc{font-size:13px;color:var(--mu2);margin-bottom:1.5rem;line-height:1.6}
+.btn-gdrive{background:var(--gdrive);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.08em;border:none;border-radius:var(--r2);padding:12px 28px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
+.btn-gdrive:hover{opacity:.88}
+.btn-gdrive svg{width:18px;height:18px;fill:white}
+.connected-info{display:none;align-items:center;justify-content:center;gap:10px;font-size:14px;color:#4cff72}
+.connected-info.vis{display:flex}
+
+/* VIDEOS GRID */
+.videos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:1.5rem}
+.vcard{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:all .2s;position:relative}
+.vcard:hover{border-color:var(--b2);transform:translateY(-2px)}
+.vcard.sel{border-color:var(--acc)}
+.vcard-thumb{position:relative;padding-top:56.25%;background:var(--s2);overflow:hidden}
+.vcard-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vcard-thumb .no-thumb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--mu)}
+.vcard-dur{position:absolute;bottom:6px;right:7px;background:rgba(0,0,0,.75);color:#fff;font-size:11px;padding:2px 6px;border-radius:4px}
+.vcard-chk{position:absolute;top:7px;right:7px;width:22px;height:22px;background:var(--acc);border-radius:50%;display:none;align-items:center;justify-content:center}
+.vcard-chk svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.vcard.sel .vcard-chk{display:flex}
+.vcard-body{padding:10px 12px}
+.vcard-name{font-size:12px;color:var(--tx);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:4px}
+.vcard-size{font-size:11px;color:var(--mu)}
+
+/* UPLOAD ZONE */
+.upload-zone{border:2px dashed var(--b2);border-radius:var(--r);padding:2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--s1);position:relative;margin-bottom:1rem}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--acc);background:rgba(255,60,0,.04)}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:2rem;margin-bottom:.6rem;opacity:.5}
+.upload-text{font-size:13px;color:var(--mu2);line-height:1.6}
+.upload-text strong{color:var(--tx)}
+
+/* FILE LIST */
+.file-list{display:flex;flex-direction:column;gap:8px;margin-bottom:1rem}
+.file-item{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);padding:9px 13px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.file-name{font-size:13px;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-size{font-size:11px;color:var(--mu2);flex-shrink:0}
+.file-rm{width:20px;height:20px;border-radius:50%;background:var(--s3);border:none;color:var(--mu2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;transition:all .15s}
+.file-rm:hover{background:var(--acc);color:#fff}
+
+/* TITLE */
+.title-block{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:1.5rem}
+.title-block h3{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.06em;color:var(--mu2);margin-bottom:1rem}
+label{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu2);margin-bottom:8px}
+input[type=text]{width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:var(--r2);color:var(--tx);font-family:'Syne',sans-serif;font-size:14px;font-weight:300;padding:12px 16px;outline:none;transition:border-color .2s}
+input[type=text]:focus{border-color:var(--acc)}
+input[type=text]::placeholder{color:var(--mu)}
+
+/* SECTION TITLE */
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.06em;color:var(--mu2)}
+.sec-sub{font-size:12px;color:var(--mu)}
+.or{display:flex;align-items:center;gap:12px;margin:1.2rem 0;color:var(--mu);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.or::before,.or::after{content:'';flex:1;height:1px;background:var(--b1)}
+
+/* BUTTONS */
+.btn{font-family:'Bebas Neue',sans-serif;letter-spacing:.1em;border:none;border-radius:var(--r2);cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
+.btn:active{transform:scale(.97)}
+.btn-lg{font-size:1.1rem;padding:14px 32px}
+.btn-acc{background:var(--acc);color:#fff}.btn-acc:hover{background:#e03000}
+.btn-acc:disabled{opacity:.35;cursor:not-allowed}
+.btn-ghost{background:transparent;border:1px solid var(--b2);color:var(--mu2);font-size:.85rem;padding:8px 18px;font-family:'Bebas Neue',sans-serif;letter-spacing:.08em}
+.btn-ghost:hover{border-color:var(--b3);color:var(--tx)}
+.btn-row{display:flex;gap:10px;align-items:center;margin-top:1.5rem;flex-wrap:wrap}
+.btn-sm{font-size:.85rem;padding:8px 16px}
+
+/* SUMMARY */
+.summary{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:1.5rem}
+.summary h3{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.06em;color:var(--mu2);margin-bottom:1rem}
+.sum-row{display:flex;justify-content:space-between;font-size:13px;color:var(--mu2);padding:6px 0;border-bottom:1px solid var(--b1)}
+.sum-row:last-child{border:none}
+.sum-row strong{color:var(--tx)}
+
+/* PROGRESS */
+.prog-section{display:none}
+.prog-section.vis{display:block}
+.prog-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:2rem;text-align:center}
+.prog-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.06em;margin-bottom:1.5rem}
+.prog-bar-wrap{height:6px;background:var(--s3);border-radius:99px;overflow:hidden;margin-bottom:1rem}
+.prog-bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .6s ease}
+.prog-info{display:flex;justify-content:space-between;font-size:12px;color:var(--mu2);margin-bottom:2rem}
+.prog-pct{color:var(--acc);font-weight:500}
+.prog-steps{display:flex;flex-direction:column;gap:10px;text-align:left}
+.pstep{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--mu);transition:color .3s}
+.pstep.done{color:var(--tx)}.pstep.active{color:var(--acc)}
+.pstep-dot{width:8px;height:8px;border-radius:50%;background:var(--mu);flex-shrink:0;transition:background .3s}
+.pstep.done .pstep-dot{background:#4cff72}
+.pstep.active .pstep-dot{background:var(--acc);box-shadow:0 0 8px var(--acc)}
+
+/* DOWNLOAD */
+.dl-section{display:none}.dl-section.vis{display:block}
+.dl-card{background:var(--s1);border:1px solid var(--acc);border-radius:var(--r);padding:2.5rem;text-align:center}
+.dl-emoji{font-size:4rem;margin-bottom:1rem;line-height:1}
+.dl-title{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:.06em;color:var(--acc);margin-bottom:.5rem}
+.dl-meta{font-size:13px;color:var(--mu2);margin-bottom:2rem}
+.btn-dl{background:var(--acc);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.1em;border:none;border-radius:var(--r2);padding:16px 40px;cursor:pointer;text-decoration:none;display:inline-block;transition:all .15s}
+.btn-dl:hover{background:#e03000;transform:scale(1.02)}
+
+/* SKELETON */
+.skel{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);overflow:hidden;animation:pulse 1.6s ease-in-out infinite}
+.skel-t{height:120px;background:var(--s2)}
+.skel-b{padding:10px 12px}
+.skel-l{height:10px;background:var(--s2);border-radius:4px;margin-bottom:7px}
+.skel-l.sh{width:50%}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--s2);border:1px solid var(--b2);color:var(--tx);font-size:13px;padding:10px 22px;border-radius:99px;z-index:999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--b2);border-radius:99px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Clip<b>Bot</b></div>
+  <div class="nav-steps">
+    <span class="nav-step active" id="ns1" onclick="goStep(1)">1. Videos</span>
+    <span class="nav-step" id="ns2" onclick="goStep(2)">2. Título</span>
+    <span class="nav-step" id="ns3" onclick="goStep(3)">3. Generar</span>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- BACKEND BAR -->
+  <div class="backend-bar">
+    <div class="dot" id="dot"></div>
+    <input type="text" id="backend-url" placeholder="https://tu-app.railway.app" value="https://clipbot-production-2955.up.railway.app"/>
+    <button class="btn-ping" onclick="pingBackend()">Conectar</button>
+  </div>
+
+  <!-- ── PASO 1: VIDEOS ── -->
+  <div class="panel active" id="p1">
+    <div class="hero">
+      <h1>Selecciona<br/>tus <span>Videos</span></h1>
+      <p>Elige videos de tu Google Drive o súbelos desde tu PC. ClipBot los convierte en un short listo para Instagram y Facebook.</p>
+    </div>
+
+    <!-- GOOGLE DRIVE -->
+    <div class="drive-card" id="drive-card">
+      <div class="drive-icon">📁</div>
+      <div class="drive-title">Google Drive</div>
+      <div class="drive-desc">Conecta tu Google Drive y selecciona los videos directamente desde la app. Sin descargar nada.</div>
+      <button class="btn-gdrive" onclick="connectDrive()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.28 2.4L1.2 11.2h5.6l5.08-8.8H6.28zm5.72 0l5.08 8.8H22.8L17.72 2.4H12zm-6.52 9.6L.6 21.6h8.16l4.84-9.6H5.48zm7.04 0L7.68 21.6h8.64l4.88-9.6h-8.68zm2.64 0l4.84 9.6H24l-4.88-9.6h-4z"/></svg>
+        Conectar Google Drive
+      </button>
+      <div class="connected-info" id="drive-connected">
+        <span style="color:#4cff72;font-size:1.2rem">✓</span>
+        <span>Google Drive conectado</span>
+        <button class="btn-ghost btn-sm" onclick="disconnectDrive()">Desconectar</button>
+      </div>
+    </div>
+
+    <!-- DRIVE VIDEOS -->
+    <div id="drive-videos-section" style="display:none">
+      <div class="sec-head">
+        <div class="sec-title">Tus videos en Drive</div>
+        <div class="sec-sub" id="drive-count">Cargando...</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" onclick="selectAllDrive()">Seleccionar todos</button>
+        <button class="btn btn-ghost btn-sm" onclick="clearDrive()">Limpiar</button>
+        <button class="btn btn-ghost btn-sm" onclick="loadDriveVideos()">↻ Actualizar</button>
+      </div>
+      <div class="videos-grid" id="drive-grid"></div>
+    </div>
+
+    <div class="or">o sube desde tu PC</div>
+
+    <!-- UPLOAD -->
+    <div class="upload-zone" id="drop-zone">
+      <input type="file" id="file-input" multiple accept="video/*" onchange="handleFiles(this.files)"/>
+      <div class="upload-icon">📹</div>
+      <div class="upload-text">
+        <strong>Arrastra videos aquí</strong><br/>
+        o haz click para seleccionarlos
+      </div>
+    </div>
+    <div class="file-list" id="file-list"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-acc btn-lg" onclick="goStep(2)">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- ── PASO 2: TÍTULO ── -->
+  <div class="panel" id="p2">
+    <div class="title-block">
+      <h3>¿Cómo se va a llamar tu short?</h3>
+      <label>Título (aparece en el video)</label>
+      <input type="text" id="short-title" placeholder='ej: "The Warning — Live 2024"' maxlength="40"/>
+      <div style="font-size:12px;color:var(--mu);margin-top:6px">Máximo 40 caracteres — aparece en la parte superior del video</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-acc btn-lg" onclick="goStep(3)">Ver resumen →</button>
+      <button class="btn btn-ghost" onclick="goStep(1)">← Atrás</button>
+    </div>
+  </div>
+
+  <!-- ── PASO 3: GENERAR ── -->
+  <div class="panel" id="p3">
+
+    <div class="summary" id="summary">
+      <h3>Resumen</h3>
+      <div class="sum-row"><span>Título</span><strong id="s-title">—</strong></div>
+      <div class="sum-row"><span>Videos de Drive</span><strong id="s-drive">0</strong></div>
+      <div class="sum-row"><span>Videos subidos</span><strong id="s-files">0</strong></div>
+      <div class="sum-row"><span>Formato</span><strong>9:16 — Instagram & Facebook Reels</strong></div>
+    </div>
+
+    <div class="prog-section" id="prog-section">
+      <div class="prog-card">
+        <div class="prog-title">Generando Short...</div>
+        <div class="prog-bar-wrap"><div class="prog-bar-fill" id="prog-fill"></div></div>
+        <div class="prog-info">
+          <span id="prog-msg">Iniciando...</span>
+          <span class="prog-pct" id="prog-pct">0%</span>
+        </div>
+        <div class="prog-steps">
+          <div class="pstep" id="ps1"><div class="pstep-dot"></div>Recibiendo archivos</div>
+          <div class="pstep" id="ps2"><div class="pstep-dot"></div>Descargando de Google Drive</div>
+          <div class="pstep" id="ps3"><div class="pstep-dot"></div>Convirtiendo a formato vertical 9:16</div>
+          <div class="pstep" id="ps4"><div class="pstep-dot"></div>Agregando texto y transiciones</div>
+          <div class="pstep" id="ps5"><div class="pstep-dot"></div>Uniendo clips en el short final</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dl-section" id="dl-section">
+      <div class="dl-card">
+        <div class="dl-emoji">🎬</div>
+        <div class="dl-title">¡Short Listo!</div>
+        <div class="dl-meta" id="dl-meta">Tu video está listo</div>
+        <a id="dl-link" class="btn-dl" download>⬇ Descargar MP4</a>
+        <div style="margin-top:1rem">
+          <button class="btn btn-ghost" onclick="startOver()">Crear otro short</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row" id="gen-row">
+      <button class="btn btn-acc btn-lg" id="btn-gen" onclick="generate()">🚀 Generar Short</button>
+      <button class="btn btn-ghost" onclick="goStep(2)">← Atrás</button>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const backendURL = () => {
+  const input = document.getElementById('backend-url').value.replace(/\/$/,'');
+  // Si estamos en Railway, usar rutas relativas
+  if (window.location.hostname !== 'localhost' && !window.location.protocol.startsWith('file')) {
+    return '';
+  }
+  return input;
+};
+
+let driveToken = null;
+let driveSelected = [];  // IDs de Drive seleccionados
+let uploadedFiles = [];
+let jobId = null;
+let pollTimer = null;
+
+// ── CHECK TOKEN EN URL (después del OAuth) ────────────────────
+window.addEventListener('load', () => {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('token');
+  if (token) {
+    driveToken = token;
+    window.history.replaceState({}, '', window.location.pathname);
+    onDriveConnected();
+  }
+  setTimeout(pingBackend, 800);
+});
+
+// ── BACKEND PING ──────────────────────────────────────────────
+async function pingBackend() {
+  const dot = document.getElementById('dot');
+  dot.className = 'dot';
+  try {
+    const r = await fetch(backendURL()+'/', {signal: AbortSignal.timeout(6000)});
+    if (r.ok) { dot.classList.add('ok'); toast('✓ Servidor conectado'); }
+    else throw new Error();
+  } catch { dot.classList.add('err'); toast('✗ No se pudo conectar al servidor'); }
+}
+
+// ── GOOGLE DRIVE ──────────────────────────────────────────────
+function connectDrive() {
+  const popup = window.open(
+    backendURL() + '/auth/google',
+    'google_auth',
+    'width=500,height=600,scrollbars=yes'
+  );
+
+  // Escuchar el token que manda el popup
+  window.addEventListener('message', function handler(e) {
+    if (e.data && e.data.type === 'drive_token') {
+      driveToken = e.data.token;
+      window.removeEventListener('message', handler);
+      if (popup && !popup.closed) popup.close();
+      onDriveConnected();
+      toast('✓ Google Drive conectado');
+    }
+  });
+}
+
+function disconnectDrive() {
+  driveToken = null;
+  driveSelected = [];
+  document.getElementById('drive-connected').classList.remove('vis');
+  document.getElementById('drive-videos-section').style.display = 'none';
+  document.getElementById('drive-card').classList.remove('connected');
+  toast('Google Drive desconectado');
+}
+
+function onDriveConnected() {
+  document.getElementById('drive-connected').classList.add('vis');
+  document.getElementById('drive-card').classList.add('connected');
+  loadDriveVideos();
+}
+
+async function loadDriveVideos() {
+  if (!driveToken) return;
+  document.getElementById('drive-videos-section').style.display = 'block';
+  document.getElementById('drive-count').textContent = 'Cargando...';
+  renderDriveSkeletons();
+
+  try {
+    const r = await fetch(backendURL()+'/drive/videos', {
+      headers: {'Authorization': 'Bearer ' + driveToken}
+    });
+    const data = await r.json();
+    if (data.error) { toast('Error: ' + data.error); return; }
+    renderDriveVideos(data.videos || []);
+  } catch(e) {
+    toast('Error al cargar videos de Drive');
+    document.getElementById('drive-grid').innerHTML = '';
+  }
+}
+
+function renderDriveVideos(videos) {
+  const grid = document.getElementById('drive-grid');
+  document.getElementById('drive-count').textContent = `${videos.length} videos encontrados`;
+
+  if (!videos.length) {
+    grid.innerHTML = '<p style="color:var(--mu);font-size:13px;grid-column:1/-1">No se encontraron videos en tu Drive.</p>';
+    return;
+  }
+
+  grid.innerHTML = videos.map(v => {
+    const dur = v.duration ? `${Math.floor(v.duration/60)}:${String(v.duration%60).padStart(2,'0')}` : '';
+    const size = v.size ? `${(v.size/1024/1024).toFixed(1)} MB` : '';
+    return `
+      <div class="vcard" id="dv-${v.id}" onclick="toggleDrive('${v.id}')">
+        <div class="vcard-thumb">
+          ${v.thumb
+            ? `<img src="${v.thumb}" loading="lazy" alt=""/>`
+            : `<div class="no-thumb">🎬</div>`}
+          ${dur ? `<span class="vcard-dur">${dur}</span>` : ''}
+          <div class="vcard-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+        </div>
+        <div class="vcard-body">
+          <div class="vcard-name">${v.name}</div>
+          <div class="vcard-size">${size}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderDriveSkeletons() {
+  document.getElementById('drive-grid').innerHTML = Array(6).fill(0).map(()=>`
+    <div class="skel"><div class="skel-t"></div>
+    <div class="skel-b"><div class="skel-l"></div><div class="skel-l sh"></div></div></div>
+  `).join('');
+}
+
+function toggleDrive(id) {
+  const idx = driveSelected.indexOf(id);
+  if (idx === -1) { driveSelected.push(id); document.getElementById('dv-'+id)?.classList.add('sel'); }
+  else { driveSelected.splice(idx,1); document.getElementById('dv-'+id)?.classList.remove('sel'); }
+}
+
+function selectAllDrive() {
+  document.querySelectorAll('.vcard').forEach(c => {
+    const id = c.id.replace('dv-','');
+    if (!driveSelected.includes(id)) { driveSelected.push(id); c.classList.add('sel'); }
+  });
+}
+
+function clearDrive() {
+  driveSelected = [];
+  document.querySelectorAll('.vcard.sel').forEach(c => c.classList.remove('sel'));
+}
+
+// ── FILE UPLOAD ───────────────────────────────────────────────
+function handleFiles(files) {
+  for (const f of files) {
+    if (!uploadedFiles.find(x => x.name===f.name && x.size===f.size)) uploadedFiles.push(f);
+  }
+  renderFileList();
+}
+
+function renderFileList() {
+  document.getElementById('file-list').innerHTML = uploadedFiles.map((f,i)=>`
+    <div class="file-item">
+      <span class="file-name">📹 ${f.name}</span>
+      <span class="file-size">${(f.size/1024/1024).toFixed(1)} MB</span>
+      <button class="file-rm" onclick="removeFile(${i})">✕</button>
+    </div>`).join('');
+}
+
+function removeFile(i) { uploadedFiles.splice(i,1); renderFileList(); }
+
+const dz = document.getElementById('drop-zone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag'); handleFiles(e.dataTransfer.files); });
+
+// ── STEPS ─────────────────────────────────────────────────────
+function goStep(n) {
+  if (n===3) buildSummary();
+  document.querySelectorAll('.panel').forEach((p,i) => p.classList.toggle('active', i===n-1));
+  document.querySelectorAll('.nav-step').forEach((s,i) => s.classList.toggle('active', i===n-1));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildSummary() {
+  const title = document.getElementById('short-title').value || '(sin título)';
+  document.getElementById('s-title').textContent = title;
+  document.getElementById('s-drive').textContent = driveSelected.length + ' videos';
+  document.getElementById('s-files').textContent = uploadedFiles.length + ' videos';
+}
+
+// ── GENERATE ──────────────────────────────────────────────────
+async function generate() {
+  const title = document.getElementById('short-title').value.trim() || 'Mi Short';
+  const total = driveSelected.length + uploadedFiles.length;
+
+  if (total === 0) { toast('Selecciona al menos un video'); return; }
+
+  document.getElementById('gen-row').style.display = 'none';
+  document.getElementById('prog-section').classList.add('vis');
+  document.getElementById('dl-section').classList.remove('vis');
+  setProgress(0, 'Enviando al servidor...');
+
+  const fd = new FormData();
+  fd.append('title', title);
+  fd.append('drive_ids', driveSelected.join(','));
+  fd.append('drive_token', driveToken || '');
+  for (const f of uploadedFiles) fd.append('videos', f);
+
+  try {
+    const r = await fetch(backendURL()+'/upload', {method:'POST', body:fd});
+    if (!r.ok) throw new Error('Error '+r.status);
+    const data = await r.json();
+    jobId = data.job_id;
+    pollStatus();
+  } catch(e) {
+    toast('Error al conectar con el servidor');
+    document.getElementById('gen-row').style.display = 'flex';
+    document.getElementById('prog-section').classList.remove('vis');
+  }
+}
+
+function pollStatus() {
+  clearInterval(pollTimer);
+  pollTimer = setInterval(async () => {
+    try {
+      const r = await fetch(backendURL()+'/status/'+jobId);
+      const job = await r.json();
+      setProgress(job.progress, job.message);
+      updateSteps(job.progress);
+      if (job.status==='done') { clearInterval(pollTimer); showDownload(job); }
+      else if (job.status==='error') { clearInterval(pollTimer); toast('Error: '+job.message); document.getElementById('gen-row').style.display='flex'; }
+    } catch(e) { console.error(e); }
+  }, 2000);
+}
+
+function setProgress(pct, msg) {
+  document.getElementById('prog-fill').style.width = pct+'%';
+  document.getElementById('prog-msg').textContent = msg;
+  document.getElementById('prog-pct').textContent = pct+'%';
+}
+
+function updateSteps(pct) {
+  [{id:'ps1',from:0},{id:'ps2',from:10},{id:'ps3',from:30},{id:'ps4',from:55},{id:'ps5',from:85}]
+  .forEach((s,i,arr) => {
+    const el = document.getElementById(s.id);
+    const next = arr[i+1];
+    if (pct >= (next?.from ?? 100)) el.className = 'pstep done';
+    else if (pct >= s.from) el.className = 'pstep active';
+    else el.className = 'pstep';
+  });
+}
+
+function showDownload(job) {
+  document.getElementById('prog-section').classList.remove('vis');
+  document.getElementById('dl-section').classList.add('vis');
+  document.getElementById('dl-link').href = backendURL()+'/download/'+jobId;
+  document.getElementById('dl-meta').textContent = job.message.replace('Short listo — ','');
+  toast('🎬 ¡Short listo para descargar!');
+}
+
+function startOver() {
+  uploadedFiles=[]; driveSelected=[]; jobId=null; clearInterval(pollTimer);
+  document.getElementById('file-list').innerHTML='';
+  document.getElementById('dl-section').classList.remove('vis');
+  document.getElementById('prog-section').classList.remove('vis');
+  document.getElementById('gen-row').style.display='flex';
+  clearDrive();
+  goStep(1);
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+</script>
+</body>
+</html>
