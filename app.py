@@ -37,6 +37,10 @@ def upd(jid, status, pct, msg):
 
 @app.route("/")
 def index():
+    return send_file("index.html")
+
+@app.route("/ping")
+def ping():
     return jsonify({"ok": True, "app": "ClipBot v3"})
 
 # ── GOOGLE OAUTH ──────────────────────────────────────────────
@@ -73,9 +77,43 @@ def oauth_callback():
     tokens = resp.json()
     access_token = tokens.get("access_token","")
 
-    # Redirigir al frontend con el token
-    frontend = os.environ.get("FRONTEND_URL", "")
-    return redirect(f"{frontend}?token={access_token}")
+    if not access_token:
+        return jsonify({"error": "No se pudo obtener token", "details": tokens}), 400
+
+    # Devolver HTML que cierra la ventana y pasa el token al padre
+    return f"""
+    <html><body>
+    <script>
+      // Si fue abierto como popup
+      if (window.opener) {{
+        window.opener.postMessage({{type:'drive_token', token:'{access_token}'}}, '*');
+        window.close();
+      }} else {{
+        // Si fue redirect normal, guardar token y regresar
+        localStorage.setItem('drive_token', '{access_token}');
+        window.location.href = '/done';
+      }}
+    </script>
+    <p>Conectado. Cerrando...</p>
+    </body></html>
+    """
+
+@app.route("/done")
+def done():
+    return """
+    <html><body>
+    <script>
+      const token = localStorage.getItem('drive_token');
+      if (token && window.opener) {{
+        window.opener.postMessage({{type:'drive_token', token:token}}, '*');
+        window.close();
+      }} else {{
+        window.location.href = 'javascript:history.back()';
+      }}
+    </script>
+    <p>Conectado exitosamente. Puedes cerrar esta ventana.</p>
+    </body></html>
+    """
 
 @app.route("/drive/videos")
 def drive_videos():
