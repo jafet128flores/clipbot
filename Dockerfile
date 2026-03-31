@@ -8,6 +8,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py .
+COPY index.html .
 RUN mkdir -p uploads outputs
 
 EXPOSE 5000
