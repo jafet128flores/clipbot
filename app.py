@@ -205,8 +205,8 @@ def process_job(job_id, title, uploaded_paths, drive_ids, drive_token):
             vert = base+"_v.mp4"
             subprocess.run([
                 "ffmpeg","-y","-i",raw,
-                "-vf","scale='if(gt(iw/ih,9/16),trunc(ih*9/16/2)*2,iw)':'if(gt(iw/ih,9/16),ih,trunc(iw*16/9/2)*2)',pad=iw:ih:(ow-iw)/2:(oh-ih)/2,scale=1080:1920",
-                "-c:v","libx264","-preset","fast","-crf","23",
+                "-vf","scale=540:960:force_original_aspect_ratio=decrease,pad=540:960:(ow-iw)/2:(oh-ih)/2",
+                "-c:v","libx264","-preset","ultrafast","-crf","28",
                 "-c:a","aac","-b:a","128k","-t","58",
                 vert,"-loglevel","error"
             ], check=True)
@@ -224,7 +224,7 @@ def process_job(job_id, title, uploaded_paths, drive_ids, drive_token):
                     f"fontsize=34:fontcolor=white@0.85:shadowcolor=black@0.6:shadowx=2:shadowy=2:"
                     f"x=50:y=h-80"
                 ),
-                "-c:v","libx264","-preset","fast","-crf","23",
+                "-c:v","libx264","-preset","ultrafast","-crf","28",
                 "-c:a","copy",txt,"-loglevel","error"
             ], check=True)
 
@@ -242,7 +242,7 @@ def process_job(job_id, title, uploaded_paths, drive_ids, drive_token):
                 "ffmpeg","-y","-i",txt,
                 "-vf",f"fade=t=in:st=0:d=0.5,fade=t=out:st={fo:.2f}:d=0.7",
                 "-af",f"afade=t=in:st=0:d=0.5,afade=t=out:st={fo:.2f}:d=0.7",
-                "-c:v","libx264","-preset","fast","-crf","23",
+                "-c:v","libx264","-preset","ultrafast","-crf","28",
                 "-c:a","aac","-b:a","128k",
                 fade,"-loglevel","error"
             ], check=True)
@@ -257,7 +257,7 @@ def process_job(job_id, title, uploaded_paths, drive_ids, drive_token):
         out_file = os.path.join(OUTPUT_DIR, f"short_{job_id}.mp4")
         subprocess.run([
             "ffmpeg","-y","-f","concat","-safe","0","-i",list_f,
-            "-c:v","libx264","-preset","fast","-crf","22",
+            "-c:v","libx264","-preset","ultrafast","-crf","28",
             "-c:a","aac","-b:a","128k",
             out_file,"-loglevel","error"
         ], check=True)
