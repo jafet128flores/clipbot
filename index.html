@@ -28,78 +28,73 @@ nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,.9);backdrop-filter:
 .panel.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* BACKEND BAR */
 .backend-bar{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:10px 16px;display:flex;align-items:center;gap:10px;margin-bottom:2rem}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--mu);flex-shrink:0;transition:background .3s}
 .dot.ok{background:#4cff72}.dot.err{background:var(--acc)}
 .backend-bar input{flex:1;background:transparent;border:none;color:var(--mu2);font-size:12px;font-family:'Syne',sans-serif;outline:none}
-.backend-bar input:focus{color:var(--tx)}
-.btn-ping{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu2);background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:4px 10px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn-ping{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu2);background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:4px 10px;cursor:pointer;white-space:nowrap}
 .btn-ping:hover{border-color:var(--b2);color:var(--tx)}
 
-/* HERO */
-.hero{margin-bottom:2.5rem}
-.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,5rem);line-height:.95;letter-spacing:.03em;margin-bottom:.8rem}
+.hero{margin-bottom:2rem}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,7vw,4.5rem);line-height:.95;letter-spacing:.03em;margin-bottom:.8rem}
 .hero h1 span{color:var(--acc)}
 .hero p{font-size:14px;color:var(--mu2);line-height:1.7;max-width:480px}
 
-/* GOOGLE DRIVE CONNECT */
-.drive-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:2rem;text-align:center;margin-bottom:1.5rem}
+/* DRIVE CONNECT */
+.drive-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:1.5rem;text-align:center;margin-bottom:1.5rem}
 .drive-card.connected{border-color:#4cff72}
-.drive-icon{font-size:3rem;margin-bottom:1rem;line-height:1}
-.drive-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.06em;margin-bottom:.5rem}
-.drive-desc{font-size:13px;color:var(--mu2);margin-bottom:1.5rem;line-height:1.6}
-.btn-gdrive{background:var(--gdrive);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.08em;border:none;border-radius:var(--r2);padding:12px 28px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
+.drive-title{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.06em;margin-bottom:.4rem}
+.drive-desc{font-size:12px;color:var(--mu2);margin-bottom:1.2rem}
+.btn-gdrive{background:var(--gdrive);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:.08em;border:none;border-radius:var(--r2);padding:10px 24px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:opacity .15s}
 .btn-gdrive:hover{opacity:.88}
-.btn-gdrive svg{width:18px;height:18px;fill:white}
-.connected-info{display:none;align-items:center;justify-content:center;gap:10px;font-size:14px;color:#4cff72}
+.btn-gdrive svg{width:16px;height:16px;fill:white}
+.connected-info{display:none;align-items:center;justify-content:center;gap:10px;font-size:13px;color:#4cff72}
 .connected-info.vis{display:flex}
 
-/* VIDEOS GRID */
-.videos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:1.5rem}
-.vcard{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:all .2s;position:relative}
-.vcard:hover{border-color:var(--b2);transform:translateY(-2px)}
-.vcard.sel{border-color:var(--acc)}
-.vcard-thumb{position:relative;padding-top:56.25%;background:var(--s2);overflow:hidden}
-.vcard-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.vcard-thumb .no-thumb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--mu)}
-.vcard-dur{position:absolute;bottom:6px;right:7px;background:rgba(0,0,0,.75);color:#fff;font-size:11px;padding:2px 6px;border-radius:4px}
-.vcard-chk{position:absolute;top:7px;right:7px;width:22px;height:22px;background:var(--acc);border-radius:50%;display:none;align-items:center;justify-content:center}
-.vcard-chk svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-.vcard.sel .vcard-chk{display:flex}
-.vcard-body{padding:10px 12px}
-.vcard-name{font-size:12px;color:var(--tx);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:4px}
-.vcard-size{font-size:11px;color:var(--mu)}
+/* FILE EXPLORER */
+.explorer{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);overflow:hidden;margin-bottom:1.2rem}
+.explorer-toolbar{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--b1);background:var(--s2)}
+.breadcrumb{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--mu2);flex:1;flex-wrap:wrap}
+.bc-item{cursor:pointer;transition:color .15s;padding:2px 4px;border-radius:4px}
+.bc-item:hover{color:var(--acc)}
+.bc-item.current{color:var(--tx);cursor:default}
+.bc-sep{color:var(--mu);font-size:10px}
+.explorer-actions{display:flex;gap:6px}
+.ex-btn{font-size:11px;color:var(--mu2);background:var(--s3);border:1px solid var(--b1);border-radius:5px;padding:3px 8px;cursor:pointer;white-space:nowrap;transition:all .15s}
+.ex-btn:hover{color:var(--tx);border-color:var(--b2)}
+.explorer-body{max-height:340px;overflow-y:auto}
+.file-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--b1);cursor:pointer;transition:background .15s}
+.file-row:last-child{border:none}
+.file-row:hover{background:var(--s2)}
+.file-row.sel{background:rgba(255,60,0,.08)}
+.file-icon{font-size:1rem;flex-shrink:0;width:20px;text-align:center;line-height:1}
+.file-info{flex:1;min-width:0}
+.file-name{font-size:13px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-name.folder-name{color:var(--mu2)}
+.file-meta{font-size:11px;color:var(--mu);margin-top:1px}
+.file-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.file-dur{font-size:11px;color:var(--mu2)}
+.file-chk{width:16px;height:16px;border-radius:50%;background:var(--acc);display:none;align-items:center;justify-content:center}
+.file-chk svg{width:8px;height:8px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.file-row.sel .file-chk{display:flex}
+.explorer-empty{padding:2rem;text-align:center;font-size:13px;color:var(--mu)}
+.sel-count{font-size:12px;color:var(--acc);font-weight:500;padding:2px 8px;background:rgba(255,60,0,.1);border-radius:99px}
 
-/* UPLOAD ZONE */
-.upload-zone{border:2px dashed var(--b2);border-radius:var(--r);padding:2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--s1);position:relative;margin-bottom:1rem}
+/* UPLOAD */
+.upload-zone{border:2px dashed var(--b2);border-radius:var(--r);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--s1);position:relative;margin-bottom:1rem}
 .upload-zone:hover,.upload-zone.drag{border-color:var(--acc);background:rgba(255,60,0,.04)}
 .upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.upload-icon{font-size:2rem;margin-bottom:.6rem;opacity:.5}
 .upload-text{font-size:13px;color:var(--mu2);line-height:1.6}
 .upload-text strong{color:var(--tx)}
+.file-list{display:flex;flex-direction:column;gap:7px;margin-bottom:1rem}
+.file-item{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);padding:8px 12px;display:flex;align-items:center;gap:10px}
+.fi-name{font-size:13px;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.fi-size{font-size:11px;color:var(--mu2);flex-shrink:0}
+.fi-rm{width:18px;height:18px;border-radius:50%;background:var(--s3);border:none;color:var(--mu2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;transition:all .15s}
+.fi-rm:hover{background:var(--acc);color:#fff}
 
-/* FILE LIST */
-.file-list{display:flex;flex-direction:column;gap:8px;margin-bottom:1rem}
-.file-item{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);padding:9px 13px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.file-name{font-size:13px;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.file-size{font-size:11px;color:var(--mu2);flex-shrink:0}
-.file-rm{width:20px;height:20px;border-radius:50%;background:var(--s3);border:none;color:var(--mu2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;transition:all .15s}
-.file-rm:hover{background:var(--acc);color:#fff}
-
-/* TITLE */
-.title-block{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:1.5rem}
-.title-block h3{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.06em;color:var(--mu2);margin-bottom:1rem}
-label{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu2);margin-bottom:8px}
-input[type=text]{width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:var(--r2);color:var(--tx);font-family:'Syne',sans-serif;font-size:14px;font-weight:300;padding:12px 16px;outline:none;transition:border-color .2s}
-input[type=text]:focus{border-color:var(--acc)}
-input[type=text]::placeholder{color:var(--mu)}
-
-/* SECTION TITLE */
-.sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem}
-.sec-title{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.06em;color:var(--mu2)}
-.sec-sub{font-size:12px;color:var(--mu)}
-.or{display:flex;align-items:center;gap:12px;margin:1.2rem 0;color:var(--mu);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+/* OR */
+.or{display:flex;align-items:center;gap:12px;margin:1rem 0;color:var(--mu);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
 .or::before,.or::after{content:'';flex:1;height:1px;background:var(--b1)}
 
 /* BUTTONS */
@@ -111,7 +106,14 @@ input[type=text]::placeholder{color:var(--mu)}
 .btn-ghost{background:transparent;border:1px solid var(--b2);color:var(--mu2);font-size:.85rem;padding:8px 18px;font-family:'Bebas Neue',sans-serif;letter-spacing:.08em}
 .btn-ghost:hover{border-color:var(--b3);color:var(--tx)}
 .btn-row{display:flex;gap:10px;align-items:center;margin-top:1.5rem;flex-wrap:wrap}
-.btn-sm{font-size:.85rem;padding:8px 16px}
+
+/* TITLE */
+.title-block{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:1.5rem}
+.title-block h3{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.06em;color:var(--mu2);margin-bottom:1rem}
+label{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu2);margin-bottom:8px}
+input[type=text]{width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:var(--r2);color:var(--tx);font-family:'Syne',sans-serif;font-size:14px;font-weight:300;padding:12px 16px;outline:none;transition:border-color .2s}
+input[type=text]:focus{border-color:var(--acc)}
+input[type=text]::placeholder{color:var(--mu)}
 
 /* SUMMARY */
 .summary{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:1.5rem}
@@ -121,8 +123,7 @@ input[type=text]::placeholder{color:var(--mu)}
 .sum-row strong{color:var(--tx)}
 
 /* PROGRESS */
-.prog-section{display:none}
-.prog-section.vis{display:block}
+.prog-section{display:none}.prog-section.vis{display:block}
 .prog-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:2rem;text-align:center}
 .prog-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.06em;margin-bottom:1.5rem}
 .prog-bar-wrap{height:6px;background:var(--s3);border-radius:99px;overflow:hidden;margin-bottom:1rem}
@@ -139,21 +140,18 @@ input[type=text]::placeholder{color:var(--mu)}
 /* DOWNLOAD */
 .dl-section{display:none}.dl-section.vis{display:block}
 .dl-card{background:var(--s1);border:1px solid var(--acc);border-radius:var(--r);padding:2.5rem;text-align:center}
-.dl-emoji{font-size:4rem;margin-bottom:1rem;line-height:1}
 .dl-title{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:.06em;color:var(--acc);margin-bottom:.5rem}
 .dl-meta{font-size:13px;color:var(--mu2);margin-bottom:2rem}
 .btn-dl{background:var(--acc);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.1em;border:none;border-radius:var(--r2);padding:16px 40px;cursor:pointer;text-decoration:none;display:inline-block;transition:all .15s}
-.btn-dl:hover{background:#e03000;transform:scale(1.02)}
+.btn-dl:hover{background:#e03000}
 
 /* SKELETON */
-.skel{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);overflow:hidden;animation:pulse 1.6s ease-in-out infinite}
-.skel-t{height:120px;background:var(--s2)}
-.skel-b{padding:10px 12px}
-.skel-l{height:10px;background:var(--s2);border-radius:4px;margin-bottom:7px}
-.skel-l.sh{width:50%}
+.skel-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--b1);animation:pulse 1.6s ease-in-out infinite}
+.skel-icon{width:20px;height:14px;background:var(--s3);border-radius:3px;flex-shrink:0}
+.skel-text{height:12px;background:var(--s3);border-radius:3px;flex:1}
+.skel-text.sh{width:30%;flex:none}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
 
-/* TOAST */
 .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--s2);border:1px solid var(--b2);color:var(--tx);font-size:13px;padding:10px 22px;border-radius:99px;z-index:999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--b2);border-radius:99px}
@@ -172,60 +170,58 @@ input[type=text]::placeholder{color:var(--mu)}
 
 <div class="wrap">
 
-  <!-- BACKEND BAR -->
   <div class="backend-bar">
     <div class="dot" id="dot"></div>
-    <input type="text" id="backend-url" placeholder="https://tu-app.railway.app" value="https://clipbot-production-2955.up.railway.app"/>
+    <input type="text" id="backend-url" value="https://clipbot-production-2955.up.railway.app"/>
     <button class="btn-ping" onclick="pingBackend()">Conectar</button>
   </div>
 
-  <!-- ── PASO 1: VIDEOS ── -->
+  <!-- PASO 1 -->
   <div class="panel active" id="p1">
     <div class="hero">
       <h1>Selecciona<br/>tus <span>Videos</span></h1>
-      <p>Elige videos de tu Google Drive o súbelos desde tu PC. ClipBot los convierte en un short listo para Instagram y Facebook.</p>
+      <p>Elige videos de tu Google Drive o súbelos desde tu PC.</p>
     </div>
 
-    <!-- GOOGLE DRIVE -->
+    <!-- DRIVE CONNECT -->
     <div class="drive-card" id="drive-card">
-      <div class="drive-icon">📁</div>
-      <div class="drive-title">Google Drive</div>
-      <div class="drive-desc">Conecta tu Google Drive y selecciona los videos directamente desde la app. Sin descargar nada.</div>
+      <div class="drive-title">📁 Google Drive</div>
+      <div class="drive-desc">Conecta tu Drive y navega tus carpetas directamente desde aquí.</div>
       <button class="btn-gdrive" onclick="connectDrive()">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.28 2.4L1.2 11.2h5.6l5.08-8.8H6.28zm5.72 0l5.08 8.8H22.8L17.72 2.4H12zm-6.52 9.6L.6 21.6h8.16l4.84-9.6H5.48zm7.04 0L7.68 21.6h8.64l4.88-9.6h-8.68zm2.64 0l4.84 9.6H24l-4.88-9.6h-4z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M6.28 2.4L1.2 11.2h5.6l5.08-8.8H6.28zm5.72 0l5.08 8.8H22.8L17.72 2.4H12zm-6.52 9.6L.6 21.6h8.16l4.84-9.6H5.48zm7.04 0L7.68 21.6h8.64l4.88-9.6h-8.68zm2.64 0l4.84 9.6H24l-4.88-9.6h-4z"/></svg>
         Conectar Google Drive
       </button>
       <div class="connected-info" id="drive-connected">
-        <span style="color:#4cff72;font-size:1.2rem">✓</span>
+        <span style="font-size:1.1rem">✓</span>
         <span>Google Drive conectado</span>
-        <button class="btn-ghost btn-sm" onclick="disconnectDrive()">Desconectar</button>
+        <button class="btn-ghost" style="font-size:10px;padding:4px 10px" onclick="disconnectDrive()">Desconectar</button>
       </div>
     </div>
 
-    <!-- DRIVE VIDEOS -->
-    <div id="drive-videos-section" style="display:none">
-      <div class="sec-head">
-        <div class="sec-title">Tus videos en Drive</div>
-        <div class="sec-sub" id="drive-count">Cargando...</div>
+    <!-- EXPLORADOR -->
+    <div id="explorer-wrap" style="display:none">
+      <div class="explorer">
+        <div class="explorer-toolbar">
+          <div class="breadcrumb" id="breadcrumb">
+            <span class="bc-item current" onclick="goRoot()">Mi Drive</span>
+          </div>
+          <div class="explorer-actions">
+            <span class="sel-count" id="sel-count" style="display:none">0 seleccionados</span>
+            <button class="ex-btn" onclick="clearDrive()">Limpiar</button>
+            <button class="ex-btn" onclick="loadFolder(currentFolderId)">↻</button>
+          </div>
+        </div>
+        <div class="explorer-body" id="explorer-body">
+          <div class="explorer-empty">Cargando...</div>
+        </div>
       </div>
-      <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap">
-        <button class="btn btn-ghost btn-sm" onclick="selectAllDrive()">Seleccionar todos</button>
-        <button class="btn btn-ghost btn-sm" onclick="clearDrive()">Limpiar</button>
-        <button class="btn btn-ghost btn-sm" onclick="loadDriveVideos()">↻ Actualizar</button>
-      </div>
-      <div class="videos-grid" id="drive-grid"></div>
     </div>
 
     <div class="or">o sube desde tu PC</div>
 
-    <!-- UPLOAD -->
     <div class="upload-zone" id="drop-zone">
       <input type="file" id="file-input" multiple accept="video/*" onchange="handleFiles(this.files)"/>
-      <div class="upload-icon">📹</div>
-      <div class="upload-text">
-        <strong>Arrastra videos aquí</strong><br/>
-        o haz click para seleccionarlos
-      </div>
+      <div class="upload-text"><strong>Arrastra videos aquí</strong> o haz click para seleccionarlos</div>
     </div>
     <div class="file-list" id="file-list"></div>
 
@@ -234,13 +230,13 @@ input[type=text]::placeholder{color:var(--mu)}
     </div>
   </div>
 
-  <!-- ── PASO 2: TÍTULO ── -->
+  <!-- PASO 2 -->
   <div class="panel" id="p2">
     <div class="title-block">
       <h3>¿Cómo se va a llamar tu short?</h3>
       <label>Título (aparece en el video)</label>
       <input type="text" id="short-title" placeholder='ej: "The Warning — Live 2024"' maxlength="40"/>
-      <div style="font-size:12px;color:var(--mu);margin-top:6px">Máximo 40 caracteres — aparece en la parte superior del video</div>
+      <div style="font-size:12px;color:var(--mu);margin-top:6px">Máximo 40 caracteres</div>
     </div>
     <div class="btn-row">
       <button class="btn btn-acc btn-lg" onclick="goStep(3)">Ver resumen →</button>
@@ -248,9 +244,8 @@ input[type=text]::placeholder{color:var(--mu)}
     </div>
   </div>
 
-  <!-- ── PASO 3: GENERAR ── -->
+  <!-- PASO 3 -->
   <div class="panel" id="p3">
-
     <div class="summary" id="summary">
       <h3>Resumen</h3>
       <div class="sum-row"><span>Título</span><strong id="s-title">—</strong></div>
@@ -279,7 +274,7 @@ input[type=text]::placeholder{color:var(--mu)}
 
     <div class="dl-section" id="dl-section">
       <div class="dl-card">
-        <div class="dl-emoji">🎬</div>
+        <div style="font-size:3rem;margin-bottom:1rem">🎬</div>
         <div class="dl-title">¡Short Listo!</div>
         <div class="dl-meta" id="dl-meta">Tu video está listo</div>
         <a id="dl-link" class="btn-dl" download>⬇ Descargar MP4</a>
@@ -293,7 +288,6 @@ input[type=text]::placeholder{color:var(--mu)}
       <button class="btn btn-acc btn-lg" id="btn-gen" onclick="generate()">🚀 Generar Short</button>
       <button class="btn btn-ghost" onclick="goStep(2)">← Atrás</button>
     </div>
-
   </div>
 </div>
 
@@ -301,21 +295,20 @@ input[type=text]::placeholder{color:var(--mu)}
 
 <script>
 const backendURL = () => {
-  const input = document.getElementById('backend-url').value.replace(/\/$/,'');
-  // Si estamos en Railway, usar rutas relativas
-  if (window.location.hostname !== 'localhost' && !window.location.protocol.startsWith('file')) {
-    return '';
-  }
-  return input;
+  if (window.location.hostname !== 'localhost' && !window.location.protocol.startsWith('file')) return '';
+  return document.getElementById('backend-url').value.replace(/\/$/,'');
 };
 
 let driveToken = null;
-let driveSelected = [];  // IDs de Drive seleccionados
+let driveSelected = [];  // [{id, name}]
 let uploadedFiles = [];
 let jobId = null;
 let pollTimer = null;
+let currentFolderId = 'root';
+let folderStack = [{id:'root', name:'Mi Drive'}];
+let allDriveItems = [];
 
-// ── CHECK TOKEN EN URL (después del OAuth) ────────────────────
+// CHECK TOKEN EN URL
 window.addEventListener('load', () => {
   const params = new URLSearchParams(window.location.search);
   const token = params.get('token');
@@ -327,142 +320,184 @@ window.addEventListener('load', () => {
   setTimeout(pingBackend, 800);
 });
 
-// ── BACKEND PING ──────────────────────────────────────────────
+// BACKEND
 async function pingBackend() {
   const dot = document.getElementById('dot');
   dot.className = 'dot';
   try {
-    const r = await fetch(backendURL()+'/', {signal: AbortSignal.timeout(6000)});
+    const r = await fetch(backendURL()+'/ping', {signal: AbortSignal.timeout(6000)});
     if (r.ok) { dot.classList.add('ok'); toast('✓ Servidor conectado'); }
     else throw new Error();
-  } catch { dot.classList.add('err'); toast('✗ No se pudo conectar al servidor'); }
+  } catch {
+    // try root
+    try {
+      const r2 = await fetch(backendURL()+'/', {signal: AbortSignal.timeout(6000)});
+      if (r2.ok) { dot.classList.add('ok'); }
+      else throw new Error();
+    } catch { dot.classList.add('err'); toast('✗ No se pudo conectar'); }
+  }
 }
 
-// ── GOOGLE DRIVE ──────────────────────────────────────────────
+// DRIVE AUTH
 function connectDrive() {
-  const popup = window.open(
-    backendURL() + '/auth/google',
-    'google_auth',
-    'width=500,height=600,scrollbars=yes'
-  );
-
-  // Escuchar el token que manda el popup
-  window.addEventListener('message', function handler(e) {
-    if (e.data && e.data.type === 'drive_token') {
-      driveToken = e.data.token;
-      window.removeEventListener('message', handler);
-      if (popup && !popup.closed) popup.close();
-      onDriveConnected();
-      toast('✓ Google Drive conectado');
-    }
-  });
+  window.location.href = backendURL() + '/auth/google';
 }
-
 function disconnectDrive() {
-  driveToken = null;
-  driveSelected = [];
+  driveToken = null; driveSelected = [];
   document.getElementById('drive-connected').classList.remove('vis');
-  document.getElementById('drive-videos-section').style.display = 'none';
+  document.getElementById('explorer-wrap').style.display = 'none';
   document.getElementById('drive-card').classList.remove('connected');
-  toast('Google Drive desconectado');
+  updateSelCount();
 }
-
 function onDriveConnected() {
   document.getElementById('drive-connected').classList.add('vis');
   document.getElementById('drive-card').classList.add('connected');
-  loadDriveVideos();
+  document.getElementById('explorer-wrap').style.display = 'block';
+  loadFolder('root');
 }
 
-async function loadDriveVideos() {
-  if (!driveToken) return;
-  document.getElementById('drive-videos-section').style.display = 'block';
-  document.getElementById('drive-count').textContent = 'Cargando...';
-  renderDriveSkeletons();
-
+// EXPLORADOR
+async function loadFolder(folderId) {
+  currentFolderId = folderId;
+  renderExplorerLoading();
   try {
-    const r = await fetch(backendURL()+'/drive/videos', {
-      headers: {'Authorization': 'Bearer ' + driveToken}
-    });
+    const url = folderId === 'root'
+      ? backendURL() + '/drive/videos'
+      : backendURL() + '/drive/folder/' + folderId;
+    const r = await fetch(url, {headers:{'Authorization':'Bearer '+driveToken}});
     const data = await r.json();
-    if (data.error) { toast('Error: ' + data.error); return; }
-    renderDriveVideos(data.videos || []);
+    allDriveItems = data.items || data.videos || [];
+    renderExplorer(allDriveItems);
+    updateBreadcrumb();
   } catch(e) {
-    toast('Error al cargar videos de Drive');
-    document.getElementById('drive-grid').innerHTML = '';
+    document.getElementById('explorer-body').innerHTML = '<div class="explorer-empty">Error al cargar. Intenta de nuevo.</div>';
   }
 }
 
-function renderDriveVideos(videos) {
-  const grid = document.getElementById('drive-grid');
-  document.getElementById('drive-count').textContent = `${videos.length} videos encontrados`;
+function goRoot() {
+  folderStack = [{id:'root', name:'Mi Drive'}];
+  loadFolder('root');
+}
 
-  if (!videos.length) {
-    grid.innerHTML = '<p style="color:var(--mu);font-size:13px;grid-column:1/-1">No se encontraron videos en tu Drive.</p>';
-    return;
-  }
+function openFolder(id, name) {
+  folderStack.push({id, name});
+  loadFolder(id);
+}
 
-  grid.innerHTML = videos.map(v => {
-    const dur = v.duration ? `${Math.floor(v.duration/60)}:${String(v.duration%60).padStart(2,'0')}` : '';
-    const size = v.size ? `${(v.size/1024/1024).toFixed(1)} MB` : '';
-    return `
-      <div class="vcard" id="dv-${v.id}" onclick="toggleDrive('${v.id}')">
-        <div class="vcard-thumb">
-          ${v.thumb
-            ? `<img src="${v.thumb}" loading="lazy" alt=""/>`
-            : `<div class="no-thumb">🎬</div>`}
-          ${dur ? `<span class="vcard-dur">${dur}</span>` : ''}
-          <div class="vcard-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
-        </div>
-        <div class="vcard-body">
-          <div class="vcard-name">${v.name}</div>
-          <div class="vcard-size">${size}</div>
-        </div>
-      </div>`;
+function updateBreadcrumb() {
+  const bc = document.getElementById('breadcrumb');
+  bc.innerHTML = folderStack.map((f, i) => {
+    const isLast = i === folderStack.length - 1;
+    return `${i > 0 ? '<span class="bc-sep">›</span>' : ''}
+    <span class="bc-item ${isLast ? 'current' : ''}" 
+      onclick="${isLast ? '' : `goToStack(${i})`}">${f.name}</span>`;
   }).join('');
 }
 
-function renderDriveSkeletons() {
-  document.getElementById('drive-grid').innerHTML = Array(6).fill(0).map(()=>`
-    <div class="skel"><div class="skel-t"></div>
-    <div class="skel-b"><div class="skel-l"></div><div class="skel-l sh"></div></div></div>
-  `).join('');
+function goToStack(idx) {
+  folderStack = folderStack.slice(0, idx + 1);
+  loadFolder(folderStack[folderStack.length - 1].id);
 }
 
-function toggleDrive(id) {
-  const idx = driveSelected.indexOf(id);
-  if (idx === -1) { driveSelected.push(id); document.getElementById('dv-'+id)?.classList.add('sel'); }
-  else { driveSelected.splice(idx,1); document.getElementById('dv-'+id)?.classList.remove('sel'); }
-}
+function renderExplorer(items) {
+  const body = document.getElementById('explorer-body');
+  if (!items.length) {
+    body.innerHTML = '<div class="explorer-empty">Esta carpeta está vacía</div>';
+    return;
+  }
 
-function selectAllDrive() {
-  document.querySelectorAll('.vcard').forEach(c => {
-    const id = c.id.replace('dv-','');
-    if (!driveSelected.includes(id)) { driveSelected.push(id); c.classList.add('sel'); }
+  // Separar carpetas y videos
+  const folders = items.filter(i => i.type === 'folder');
+  const videos = items.filter(i => i.type !== 'folder');
+
+  let html = '';
+
+  folders.forEach(f => {
+    html += `<div class="file-row folder" onclick="openFolder('${f.id}','${f.name.replace(/'/g,"\\'")}')">
+      <div class="file-icon">📁</div>
+      <div class="file-info">
+        <div class="file-name folder-name">${f.name}</div>
+      </div>
+      <div class="file-right">
+        <span style="font-size:11px;color:var(--mu)">›</span>
+      </div>
+    </div>`;
   });
+
+  videos.forEach(v => {
+    const dur = v.duration ? `${Math.floor(v.duration/60)}:${String(v.duration%60).padStart(2,'0')}` : '';
+    const size = v.size ? `${(v.size/1024/1024).toFixed(1)} MB` : '';
+    const isSel = driveSelected.find(x => x.id === v.id);
+    html += `<div class="file-row ${isSel ? 'sel' : ''}" id="frow-${v.id}" onclick="toggleDrive('${v.id}','${v.name.replace(/'/g,"\\'")}')">
+      <div class="file-icon">🎬</div>
+      <div class="file-info">
+        <div class="file-name">${v.name}</div>
+        <div class="file-meta">${size}</div>
+      </div>
+      <div class="file-right">
+        <span class="file-dur">${dur}</span>
+        <div class="file-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </div>
+    </div>`;
+  });
+
+  body.innerHTML = html;
+}
+
+function renderExplorerLoading() {
+  document.getElementById('explorer-body').innerHTML = Array(5).fill(0).map(() =>
+    `<div class="skel-row">
+      <div class="skel-icon"></div>
+      <div class="skel-text"></div>
+      <div class="skel-text sh"></div>
+    </div>`
+  ).join('');
+}
+
+function toggleDrive(id, name) {
+  const idx = driveSelected.findIndex(x => x.id === id);
+  const row = document.getElementById('frow-'+id);
+  if (idx === -1) {
+    driveSelected.push({id, name});
+    row?.classList.add('sel');
+  } else {
+    driveSelected.splice(idx, 1);
+    row?.classList.remove('sel');
+  }
+  updateSelCount();
 }
 
 function clearDrive() {
   driveSelected = [];
-  document.querySelectorAll('.vcard.sel').forEach(c => c.classList.remove('sel'));
+  document.querySelectorAll('.file-row.sel').forEach(r => r.classList.remove('sel'));
+  updateSelCount();
 }
 
-// ── FILE UPLOAD ───────────────────────────────────────────────
+function updateSelCount() {
+  const el = document.getElementById('sel-count');
+  if (driveSelected.length > 0) {
+    el.style.display = 'inline';
+    el.textContent = driveSelected.length + ' seleccionado' + (driveSelected.length > 1 ? 's' : '');
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+// FILE UPLOAD
 function handleFiles(files) {
   for (const f of files) {
     if (!uploadedFiles.find(x => x.name===f.name && x.size===f.size)) uploadedFiles.push(f);
   }
   renderFileList();
 }
-
 function renderFileList() {
   document.getElementById('file-list').innerHTML = uploadedFiles.map((f,i)=>`
     <div class="file-item">
-      <span class="file-name">📹 ${f.name}</span>
-      <span class="file-size">${(f.size/1024/1024).toFixed(1)} MB</span>
-      <button class="file-rm" onclick="removeFile(${i})">✕</button>
+      <span class="fi-name">🎬 ${f.name}</span>
+      <span class="fi-size">${(f.size/1024/1024).toFixed(1)} MB</span>
+      <button class="fi-rm" onclick="removeFile(${i})">✕</button>
     </div>`).join('');
 }
-
 function removeFile(i) { uploadedFiles.splice(i,1); renderFileList(); }
 
 const dz = document.getElementById('drop-zone');
@@ -470,14 +505,13 @@ dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dra
 dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
 dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag'); handleFiles(e.dataTransfer.files); });
 
-// ── STEPS ─────────────────────────────────────────────────────
+// STEPS
 function goStep(n) {
   if (n===3) buildSummary();
   document.querySelectorAll('.panel').forEach((p,i) => p.classList.toggle('active', i===n-1));
   document.querySelectorAll('.nav-step').forEach((s,i) => s.classList.toggle('active', i===n-1));
   window.scrollTo({top:0,behavior:'smooth'});
 }
-
 function buildSummary() {
   const title = document.getElementById('short-title').value || '(sin título)';
   document.getElementById('s-title').textContent = title;
@@ -485,12 +519,10 @@ function buildSummary() {
   document.getElementById('s-files').textContent = uploadedFiles.length + ' videos';
 }
 
-// ── GENERATE ──────────────────────────────────────────────────
+// GENERATE
 async function generate() {
   const title = document.getElementById('short-title').value.trim() || 'Mi Short';
-  const total = driveSelected.length + uploadedFiles.length;
-
-  if (total === 0) { toast('Selecciona al menos un video'); return; }
+  if (driveSelected.length + uploadedFiles.length === 0) { toast('Selecciona al menos un video'); return; }
 
   document.getElementById('gen-row').style.display = 'none';
   document.getElementById('prog-section').classList.add('vis');
@@ -499,7 +531,7 @@ async function generate() {
 
   const fd = new FormData();
   fd.append('title', title);
-  fd.append('drive_ids', driveSelected.join(','));
+  fd.append('drive_ids', driveSelected.map(x=>x.id).join(','));
   fd.append('drive_token', driveToken || '');
   for (const f of uploadedFiles) fd.append('videos', f);
 
@@ -526,7 +558,7 @@ function pollStatus() {
       updateSteps(job.progress);
       if (job.status==='done') { clearInterval(pollTimer); showDownload(job); }
       else if (job.status==='error') { clearInterval(pollTimer); toast('Error: '+job.message); document.getElementById('gen-row').style.display='flex'; }
-    } catch(e) { console.error(e); }
+    } catch(e) {}
   }, 2000);
 }
 
@@ -535,7 +567,6 @@ function setProgress(pct, msg) {
   document.getElementById('prog-msg').textContent = msg;
   document.getElementById('prog-pct').textContent = pct+'%';
 }
-
 function updateSteps(pct) {
   [{id:'ps1',from:0},{id:'ps2',from:10},{id:'ps3',from:30},{id:'ps4',from:55},{id:'ps5',from:85}]
   .forEach((s,i,arr) => {
@@ -546,25 +577,21 @@ function updateSteps(pct) {
     else el.className = 'pstep';
   });
 }
-
 function showDownload(job) {
   document.getElementById('prog-section').classList.remove('vis');
   document.getElementById('dl-section').classList.add('vis');
   document.getElementById('dl-link').href = backendURL()+'/download/'+jobId;
   document.getElementById('dl-meta').textContent = job.message.replace('Short listo — ','');
-  toast('🎬 ¡Short listo para descargar!');
+  toast('🎬 ¡Short listo!');
 }
-
 function startOver() {
   uploadedFiles=[]; driveSelected=[]; jobId=null; clearInterval(pollTimer);
   document.getElementById('file-list').innerHTML='';
   document.getElementById('dl-section').classList.remove('vis');
   document.getElementById('prog-section').classList.remove('vis');
   document.getElementById('gen-row').style.display='flex';
-  clearDrive();
-  goStep(1);
+  clearDrive(); goStep(1);
 }
-
 function toast(msg) {
   const t = document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
